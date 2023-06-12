@@ -1,24 +1,23 @@
 from rest_framework.response import Response
 from .models import *
-from .serializers import ProductsSerializer
-
-
-def getNotesList(request):
-    notes = Note.objects.all().order_by('-updated')
-    serializer = ProductsSerializer(notes, many=True)
-    return Response(serializer.data)
+from .serializers import *
 
 
 def getProductsList(request):
-    products = Product.objects.all()#.order_by('-name')
-    print(products)
-    serializer = ProductsSerializer(products, many=True)
+    products = CartItem.objects.filter()#.order_by('-name')
+    serializer = CartItemsSerializer(products, many=True)
+    print(serializer.data)
     return Response(serializer.data)
 
 
-def getNoteDetail(request, pk):
-    notes = Note.objects.get(id=pk)
-    serializer = ProductsSerializer(notes, many=False)
+def getCartItemList(request):
+    cart = Cart.objects.get(user=request.user)
+    print(cart)
+    cartitems = CartItem.objects.filter(cart=cart)
+    print(cartitems)
+    serializer = CartItemsSerializer(cartitems, many=True)
+    print(serializer.data)
+    print("--"*20)
     return Response(serializer.data)
 
 

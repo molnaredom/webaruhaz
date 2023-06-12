@@ -1,7 +1,8 @@
 from django.http import response
 from django.shortcuts import render
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.serializers import Serializer
 from .models import Note
 from .serializers import ProductsSerializer
@@ -19,17 +20,17 @@ def getProducts(request):
     #     return createNote(request)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def getNote(request, pk):
+@api_view(['GET', 'POST'])
+def getCart(request):
 
     if request.method == 'GET':
-        return getNoteDetail(request, pk)
+        return getCartItemList(request)
 
-    if request.method == 'PUT':
-        return updateNote(request, pk)
-
-    if request.method == 'DELETE':
-        return deleteNote(request, pk)
+    # if request.method == 'PUT':
+    #     return updateNote(request, pk)
+    #
+    # if request.method == 'DELETE':
+    #     return deleteNote(request, pk)
 
 
 # @api_view(['POST'])
