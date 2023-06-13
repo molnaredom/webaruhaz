@@ -1,10 +1,21 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { Link } from 'react-router-dom'
+import AuthContext from '../context/AuthContext'
 
 const Header = () => {
-
+    let {user, logoutUser} = useContext(AuthContext)
     return (
-        <div className="app-header">
-            <h1>Note List</h1>
+        <div>
+            <Link to="/" >Home</Link>
+            <span> | </span>
+            {user ? (
+                 <p  onClick={logoutUser}>Logout</p>
+            ): (
+                <Link to="/login" >Login</Link>
+            )}
+           
+            {user &&   <p>Hello {user.username}</p>}
+           
         </div>
     )
 }

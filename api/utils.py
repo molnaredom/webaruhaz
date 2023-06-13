@@ -11,14 +11,16 @@ def getProductsList(request):
 
 
 def getCartItemList(request):
-    cart = Cart.objects.get(user=request.user)
-    print(cart)
-    cartitems = CartItem.objects.filter(cart=cart)
-    print(cartitems)
-    serializer = CartItemsSerializer(cartitems, many=True)
-    print(serializer.data)
-    print("--"*20)
-    return Response(serializer.data)
+    if not request.user.is_anonymous:
+        cart = Cart.objects.get(user=request.user)
+        print(cart)
+        cartitems = CartItem.objects.filter(cart=cart)
+        print(cartitems)
+        serializer = CartItemsSerializer(cartitems, many=True)
+        print(serializer.data)
+        print("--"*20)
+        return Response(serializer.data)
+    return Response({})
 
 
 def createNote(request):

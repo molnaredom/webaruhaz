@@ -1,8 +1,9 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, StringRelatedField
 from .models import *
 
 
 class ProductsSerializer(ModelSerializer):
+    category = StringRelatedField(source='category.name')
     class Meta:
         model = Product
         fields = '__all__'
