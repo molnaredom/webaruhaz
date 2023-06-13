@@ -4,8 +4,8 @@ from .serializers import *
 
 
 def getProductsList(request):
-    products = CartItem.objects.filter()#.order_by('-name')
-    serializer = CartItemsSerializer(products, many=True)
+    products = Product.objects.filter()#.order_by('-name')
+    serializer = ProductsSerializer(products, many=True)
     print(serializer.data)
     return Response(serializer.data)
 

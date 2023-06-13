@@ -1,42 +1,35 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.css';
 
 let getTime = (note) => {
-    return new Date(note.updated).toLocaleDateString()
+    return new Date(note.created).toLocaleDateString()
 }
 
 let getTitle = (note) => {
-
-    let title = note.body.split('\n')[0]
-    if (title.length > 45) {
-        return title.slice(0, 45)
-    }
-    return title
+    return note.name
 }
 
 
-let getContent = (note) => {
-    let title = getTitle(note)
-    let content = note.body.replaceAll('\n', ' ')
-    content = content.replaceAll(title, '')
-
-    if (content.length > 45) {
-        return content.slice(0, 45) + '...'
-    } else {
-        return content
-    }
+let getContent = (product) => {
+    console.log(product)
+    console.log(product.desciption)
+    return product.desciption
 }
 
 
-const ListItem = ({ note }) => {
+const ListItem = ({ product }) => {
     return (
-        <Link to={`/note/${note.id}`}>
-            <div className="notes-list-item" >
-                <h3>{getTitle(note)}</h3>
-                <p><span>{getTime(note)}</span>{getContent(note)}</p>
+        <div className="col-4 card p-3" >
+            <div className="card-body">
+                <h5 className="card-title">{getTitle(product)}</h5>
+                <p className="card-text">
+                    {getContent(product)}
+                </p>
+                <p className="card-text">
+                    {getTime(product)}
+                </p>
             </div>
-
-        </Link>
+        </div>
     )
 }
 
