@@ -1,43 +1,83 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import ListItem from '../components/ListItem'
-// import AddButton from '../components/AddButton'
+import axios from 'axios';
 
 
 const ProductsListPage = () => {
-  const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    getProducts();
-  }, []);
+    useEffect(() => {
+        getProducts();
+    }, []);
 
-  const getProducts = async () => {
-    try {
-      const response = await fetch('/api/products/');
-      const data = await response.json();
-      console.log(data)
-      setProducts(data);
-    } catch (error) {
-      console.error('Error retrieving products:', error);
+    useEffect(() => {
+        // Kategóriák lekérése az API-ból
+        axios.get('/api/categories/')
+            .then(response => {
+                setCategories(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
+
+    useEffect(() => {
+    if (selectedCategory) {
+      // Termékek szűrése a kiválasztott kategória alapján
+      axios.get(`/api/products/?category=${selectedCategory}`)
+        .then(response => {
+          setProducts(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      // Minden termék lekérése, ha nincs kiválasztva kategória
+      axios.get('/api/products/')
+        .then(response => {
+          setProducts(response.data);
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
+  }, [selectedCategory]);
+
+    const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
-  return (
-    <div className="products">
-      <div className="products-header">
-        <h2 className="products-title">&#9782; Webáruházunk termékei</h2>
+    const getProducts = async () => {
+        const response = await fetch('/api/products/');
+        const data = await response.json();
+        setProducts(data);
+    };
 
-        <p className="products-count">Összes termék: {products.length} darab</p>
-      </div>
+    return (
+        <div>
+            <select value={selectedCategory} onChange={handleCategoryChange}>
+                <option value="">Összes kategória</option>
+                {categories.map(category => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
+            </select>
+            <div className="products">
+                <div className="products-header">
+                    <h2 className="products-title">Webáruházunk termékei</h2>
 
-      <div className="row">
+                    <p className="products-count">Összes termék: {products.length} darab</p>
+                </div>
 
-          {products.map((product) => (
-              <ListItem key={product.id} product={product} />
-          ))}
-      </div>
-      {/*<AddButton />*/}
-    </div>
-  );
+                <div className="row">
+                    {products.map((product) => (
+                        <ListItem key={product.id} product={product}/>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default ProductsListPage;

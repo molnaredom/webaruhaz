@@ -11,8 +11,6 @@ let getTitle = (note) => {
 
 
 let getContent = (product) => {
-    console.log(product)
-    console.log(product.desciption)
     return product.desciption
 }
 
