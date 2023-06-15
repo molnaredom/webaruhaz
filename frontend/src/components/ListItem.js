@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
+import Alert from 'react-bootstrap/Alert';
 
 let getTime = (note) => {
     return new Date(note.created).toLocaleDateString()
@@ -22,6 +23,7 @@ let getInStock = (product) => {
 
 const ListItem = ({product}) => {
     const [quantity, setQuantity] = useState(1);
+    const [showAlert, setShowAlert] = useState(false); // State variable for the alert
     const addToCart = () => {
         console.log(quantity)
         const requestBody = {
@@ -41,6 +43,7 @@ const ListItem = ({product}) => {
             .then((data) => {
                 // Handle the response data if needed
                 console.log(data);
+                setShowAlert(true);
             })
             .catch((error) => {
                 // Handle any errors that occurred during the request
@@ -78,7 +81,13 @@ const ListItem = ({product}) => {
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
                     <button className="btn btn-outline-primary" onClick={addToCart}>Kosárhoz adás</button>
+
                 </div>
+                {showAlert && (
+        <Alert variant="success" onClose={() => setShowAlert(false)} dismissible>
+          Product added to cart successfully!
+        </Alert>
+      )}
             </div>
         </div>
     )
