@@ -21,7 +21,7 @@ function App() {
             <Header />
             <PrivateRoute path="/" exact component={ProductsListPage} />
             <Route path="/login" component={LoginPage} />
-            <Route path="/cart" component={CartPage} />
+            <PrivateRoute path="/cart" component={CartPage} />
           </div>
         </div>
       </AuthProvider>
