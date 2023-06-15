@@ -5,13 +5,13 @@ import axios from "axios";
 
 const Header = () => {
     let {user, logoutUser} = useContext(AuthContext)
-
     const [cartitems, setCartitems] = useState(null);
-    let num_of_items = undefined
+    let num_of_items;
+
     if (cartitems) {
         num_of_items = cartitems.reduce((total, item) => total + item.quantity, 0);
-        console.log(num_of_items)
     }
+
     useEffect(() => {
         fetchCartitems();
     }, []);
@@ -20,13 +20,11 @@ const Header = () => {
         try {
             const response = await axios.post('/api/cart/',
                 {user: user.user_id});
-            console.log(response.data)
             setCartitems(response.data);
         } catch (error) {
             console.error(error);
         }
     };
-
 
     return (
         <div className="m-3 text-center">
@@ -46,10 +44,9 @@ const Header = () => {
                 <Link to="/login" >Belépés</Link>
             )}
 
-            {user &&   <p>Üdv {user.username}!</p>}
-
+            {user && <p>Üdv {user.username}!</p>}
         </div>
     )
 }
 
-export default Header
+export default Header;

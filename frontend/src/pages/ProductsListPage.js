@@ -26,7 +26,6 @@ const ProductsListPage = () => {
 
     useEffect(() => {
     if (selectedCategory) {
-      // Termékek szűrése a kiválasztott kategória alapján
       axios.get(`/api/products/?category=${selectedCategory}`)
         .then(response => {
           setProducts(response.data);
@@ -35,7 +34,6 @@ const ProductsListPage = () => {
           console.error(error);
         });
     } else {
-      // Minden termék lekérése, ha nincs kiválasztva kategória
       axios.get('/api/products/')
         .then(response => {
           setProducts(response.data);
@@ -58,18 +56,17 @@ const ProductsListPage = () => {
 
     return (
         <div>
-            <select value={selectedCategory} onChange={handleCategoryChange}>
-                <option value="">Összes kategória</option>
-                {categories.map(category => (
-                    <option key={category.id} value={category.id}>{category.name}</option>
-                ))}
-            </select>
             <div className="products">
                 <div className="products-header">
                     <h2 className="products-title">Webáruházunk termékei</h2>
-                    <p className="products-count">Összes termék: {products.length} darab</p>
+                    <select className="form-select" value={selectedCategory} onChange={handleCategoryChange}>
+                        <option value="">Összes kategória</option>
+                        {categories.map(category => (
+                            <option key={category.id} value={category.id}>{category.name}</option>
+                        ))}
+                    </select>
+                    <p className="products-count">Termékek száma: {products.length} darab</p>
                 </div>
-
                 <div className="row">
                     {products.map((product) => (
                         <ListItem key={product.id} product={product}/>

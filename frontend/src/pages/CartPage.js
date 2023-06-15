@@ -5,8 +5,6 @@ import AuthContext from "../context/AuthContext";
 const CartPage = () => {
     let {user} = useContext(AuthContext)
     const [cartitems, setCartitems] = useState(null);
-    console.log("10 cartitems", cartitems)
-
 
     useEffect(() => {
         fetchCartitems();
@@ -16,7 +14,6 @@ const CartPage = () => {
         try {
             const response = await axios.post('/api/cart/',
                 {user: user.user_id});
-            console.log(response.data)
             setCartitems(response.data);
         } catch (error) {
             console.error(error);
@@ -24,7 +21,7 @@ const CartPage = () => {
     };
 
     if (!cartitems) {
-        return <p>Loading...</p>;
+        return <p>A kosárban lévő elemeket nem sikerült betölteni!</p>;
     } else {
         const totalAmount = cartitems.reduce((total, item) => total + item.quantity * item.product.price, 0);
         return (

@@ -1,27 +1,35 @@
+from requests import Response
 from rest_framework.decorators import api_view
-from .utils import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import CartItemSerializerWithProductDetails
+from .serializers import *
+from .models import *
+from rest_framework.response import Response
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token['username'] = user.username
-
         return token
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
 @api_view(['GET'])
 def getProducts(request):
-    if request.method == 'GET':
-        return getProductsList(request)\
+    category_id = request.GET.get('category')
+
+    if category_id:
+        products = Product.objects.filter(category_id=category_id)
+    else:
+        products = Product.objects.all()
+
+    serializer = ProductsSerializer(products, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['POST'])

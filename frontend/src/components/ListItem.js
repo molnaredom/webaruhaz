@@ -25,10 +25,9 @@ const ListItem = ({product}) => {
     const [quantity, setQuantity] = useState(1);
     const [showAlert, setShowAlert] = useState(false); // State variable for the alert
     const addToCart = () => {
-        console.log(quantity)
         const requestBody = {
-            cart: 1, // Replace with the appropriate cart ID
-            product: product.id, // Pass the product ID
+            cart: 1,
+            product: product.id,
             quantity: quantity,
         };
 
