@@ -23,7 +23,6 @@ export const AuthProvider = ({children}) => {
             body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
         })
         let data = await response.json()
-        console.log("bajalant adat", data)
 
         if(response.status === 200){
             setAuthTokens(data)
@@ -45,7 +44,6 @@ export const AuthProvider = ({children}) => {
 
 
     let updateToken = async ()=> {
-        console.log("update token")
         let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
             method:'POST',
             headers:{

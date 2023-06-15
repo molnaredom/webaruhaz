@@ -19,32 +19,42 @@ const CartPage = () => {
             console.error(error);
         }
     };
-
     if (!cartitems) {
         return <p>A kosárban lévő elemeket nem sikerült betölteni!</p>;
     } else {
         const totalAmount = cartitems.reduce((total, item) => total + item.quantity * item.product.price, 0);
+        const groupedItems = cartitems.reduce((groups, item) => {
+            const {name, price} = item.product;
+            const key = `${name}-${price}`;
+            if (!groups[key]) {
+                groups[key] = {
+                    items: [],
+                    totalQuantity: 0,
+                };
+            }
+            groups[key].items.push(item);
+            groups[key].totalQuantity += item.quantity;
+            return groups;
+        }, {});
         return (
             <div>
-                {cartitems.map((item) => (
-                    <div className="card m-3" key={item.id}>
-                        <div className="card-body mx-3">
-                            <h5 className="card-title">{item.product.name}</h5>
+                {Object.entries(groupedItems).map(([key, {items, totalQuantity}]) => {
+                    const [name, price] = key.split("-");
+                    return (
+                        <div key={key} className="card m-3">
+                            <h5 className="p-3 px-4">{name}</h5>
                             <ul className="list-group list-group-flush">
-                                <li className="list-group-item">Darabszám: {item.quantity}</li>
-                                <li className="list-group-item">Egységár: {item.product.price} Ft</li>
-                                <li className="list-group-item">Teljes ár: {item.quantity * item.product.price} Ft</li>
+                                <li className="list-group-item">Darabszám: {totalQuantity}</li>
+                                <li className="list-group-item">Egységár: {price} Ft</li>
+                                <li className="list-group-item">Teljes ár: {totalQuantity * price} Ft</li>
                             </ul>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
                 <p className="text-center mt-4">Teljes fizetendő összeg: {totalAmount} Ft</p>
             </div>
-
         );
     }
-
-
 };
 
 export default CartPage;
