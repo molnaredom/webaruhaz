@@ -1,6 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
-import { Card, Image } from 'react-bootstrap';
 
 let getTime = (note) => {
     return new Date(note.created).toLocaleDateString()
@@ -10,21 +9,46 @@ let getTitle = (note) => {
     return note.name
 }
 
-
 let getContent = (product) => {
     return product.desciption
 }
 let getPrice = (product) => {
     return product.price + " Ft"
 }
+
 let getInStock = (product) => {
-    return 'Raktáron: '+ product.in_stock + ' db'
+    return 'Raktáron: ' + product.in_stock + ' db'
 }
 
-const ListItem = ({ product }) => {
+const ListItem = ({product}) => {
+    const [quantity, setQuantity] = useState(1);
+    const addToCart = () => {
+        console.log(quantity)
+        const requestBody = {
+            cart: 1, // Replace with the appropriate cart ID
+            product: product.id, // Pass the product ID
+            quantity: quantity,
+        };
 
+        fetch('/api/add-to-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Handle the response data if needed
+                console.log(data);
+            })
+            .catch((error) => {
+                // Handle any errors that occurred during the request
+                console.error(error);
+            });
+    };
     return (
-        <div className="col-4 card p-3" >
+        <div className="col-4 card p-3">
             <div className="card-body row">
                 <div className="col-8">
                     <h5 className="card-title">{getTitle(product)}</h5>
@@ -43,14 +67,19 @@ const ListItem = ({ product }) => {
 
                 </div>
                 <div className="col-4">
-                    {/*{console.log('127.0.0.1:8000' + product.image)}*/}
-                    {console.log(product.image)}
-                    {product && <img src={'http://127.0.0.1:8000/api'+ product.image}
-                                     alt="Product" height='100px' width='100px' />}
+                    {product && <img src={'http://127.0.0.1:8000/api' + product.image}
+                                     alt="Product" height='100px' width='100px'/>}
                 </div>
-
+                <div className='row'>
+                    <input
+                        className='input-group-text'
+                        type="number"
+                        value={quantity}
+                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    />
+                    <button className="btn btn-outline-primary" onClick={addToCart}>Kosárhoz adás</button>
+                </div>
             </div>
-
         </div>
     )
 }

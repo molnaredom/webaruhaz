@@ -8,8 +8,14 @@ class ProductsSerializer(ModelSerializer):
         fields = '__all__'
 
 
-class CartItemsSerializer(ModelSerializer):
+class CartItemSerializerWithProductDetails(ModelSerializer):
     product = ProductsSerializer()
+    class Meta:
+        model = CartItem
+        fields = '__all__'
+
+
+class CartItemSerializer(ModelSerializer):
     class Meta:
         model = CartItem
         fields = '__all__'

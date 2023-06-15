@@ -67,7 +67,6 @@ const ProductsListPage = () => {
             <div className="products">
                 <div className="products-header">
                     <h2 className="products-title">Webáruházunk termékei</h2>
-
                     <p className="products-count">Összes termék: {products.length} darab</p>
                 </div>
 
