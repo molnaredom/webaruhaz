@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from rest_framework.decorators import api_view
 from .utils import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -19,7 +20,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['GET'])
 def getProducts(request):
-
     if request.method == 'GET':
         return getProductsList(request)
 
@@ -32,8 +32,6 @@ def getCategories(request):
         return Response(serializer.data)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def getCart(request):
-
-    if request.method == 'GET':
-        return getCartItemList(request)
+    return getCartItemList(request)

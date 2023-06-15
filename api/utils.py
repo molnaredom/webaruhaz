@@ -15,11 +15,7 @@ def getProductsList(request):
 
 
 def getCartItemList(request):
-    cart = Cart.objects.get(user=request.user)
-    print(cart)
+    cart = Cart.objects.get(user=request.data["user"])
     cartitems = CartItem.objects.filter(cart=cart)
-    print(cartitems)
     serializer = CartItemsSerializer(cartitems, many=True)
-    print(serializer.data)
-    print("--"*20)
     return Response(serializer.data)

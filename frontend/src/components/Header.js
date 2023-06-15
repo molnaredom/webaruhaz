@@ -8,6 +8,7 @@ const Header = () => {
     return (
         <div className="m-3 text-center">
             <Link to="/" ><h1>Informatikai Webáruház</h1></Link>
+            <Link to="/cart" ><h5>Kosár</h5></Link>
             {user ? (
                  <a  onClick={logoutUser}>Kilépés</a>
             ): (

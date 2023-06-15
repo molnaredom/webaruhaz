@@ -16,6 +16,7 @@ const ProductsListPage = () => {
         // Kategóriák lekérése az API-ból
         axios.get('/api/categories/')
             .then(response => {
+                console.log(response.data)
                 setCategories(response.data);
             })
             .catch(error => {

@@ -9,6 +9,7 @@ class ProductsSerializer(ModelSerializer):
 
 
 class CartItemsSerializer(ModelSerializer):
+    product = ProductsSerializer()
     class Meta:
         model = CartItem
         fields = '__all__'

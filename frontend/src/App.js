@@ -8,6 +8,7 @@ import './App.css';
 import Header from './components/Header'
 import ProductsListPage from './pages/ProductsListPage'
 import LoginPage from './pages/LoginPage'
+import CartPage from './pages/CartPage'
 import PrivateRoute from './utils/PrivateRoute'
 import {AuthProvider} from "./context/AuthContext";
 
@@ -20,6 +21,7 @@ function App() {
             <Header />
             <PrivateRoute path="/" exact component={ProductsListPage} />
             <Route path="/login" component={LoginPage} />
+            <Route path="/cart" component={CartPage} />
           </div>
         </div>
       </AuthProvider>
